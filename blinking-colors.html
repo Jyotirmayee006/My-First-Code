@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blinking Colors on Hover</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1a1a2e;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 40px;
+            max-width: 1000px;
+        }
+
+        .city {
+            width: 120px;
+            height: 120px;
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: black;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .city:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px currentColor;
+        }
+
+        /* Initial colors for each city */
+        .mumbai { background: #ff6b6b; }
+        .delhi { background: #4ecdc4; }
+        .bangalore { background: #ffe66d; }
+        .chennai { background: #95e1d3; }
+        .kolkata { background: #f38181; }
+        .hyderabad { background: #aa96da; }
+        .pune { background: #ff9f43; }
+        .jaipur { background: #54a0ff; }
+        .ahmedabad { background: #5f27cd; }
+        .kochi { background: #00d2d3; }
+        .chandigarh { background: #ff9ff3; }
+        .odisha { background: #c8d6e5; }
+        .nagpur { background: #ee5a24; }
+        .lucknow { background: #009432; }
+        .shimla { background: #0abde3; }
+        .mysore { background: #ee5253; }
+        .vadodara { background: #10ac84; }
+        .indore { background: #2e86de; }
+
+        /* Blinking animation */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .blinking-city {
+            animation: blink 0.3s infinite alternate;
+        }
+
+        /* Glow effect during blink */
+        @keyframes glow {
+            0% { box-shadow: 0 0 10px currentColor, 0 0 20px currentColor; }
+            100% { box-shadow: 0 0 20px currentColor, 0 0 40px currentColor, 0 0 60px currentColor; }
+        }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="city mumbai" data-color="#ff6b6b">Mumbai</div>
+        <div class="city delhi" data-color="#4ecdc4">Delhi</div>
+        <div class="city bangalore" data-color="#ffe66d">Bangalore</div>
+        <div class="city chennai" data-color="#95e1d3">Chennai</div>
+        <div class="city kolkata" data-color="#f38181">Kolkata</div>
+        <div class="city hyderabad" data-color="#aa96da">Hyderabad</div>
+        <div class="city pune" data-color="#ff9f43">Pune</div>
+        <div class="city jaipur" data-color="#54a0ff">Jaipur</div>
+        <div class="city ahmedabad" data-color="#5f27cd">Ahmedabad</div>
+        <div class="city kochi" data-color="#00d2d3">Kochi</div>
+        <div class="city chandigarh" data-color="#ff9ff3">Chandigarh</div>
+        <div class="city odisha" data-color="#c8d6e5">Odisha</div>
+        <div class="city nagpur" data-color="#ee5a24">Nagpur</div>
+        <div class="city lucknow" data-color="#009432">Lucknow</div>
+        <div class="city shimla" data-color="#0abde3">Shimla</div>
+        <div class="city mysore" data-color="#ee5253">Mysore</div>
+        <div class="city vadodara" data-color="#10ac84">Vadodara</div>
+        <div class="city indore" data-color="#2e86de">Indore</div>
+    </div>
+
+    <script>
+        // Array of different blinking colors
+        const blinkColors = [
+            '#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', 
+            '#f38181', '#aa96da', '#ff9f43', '#54a0ff',
+            '#5f27cd', '#00d2d3', '#ff9ff3', '#c8d6e5',
+            '#ee5a24', '#009432', '#0abde3', '#ee5253',
+            '#10ac84', '#2e86de'
+        ];
+
+        const cities = document.querySelectorAll('.city');
+
+        // Function to create random blinking colors
+        function addBlinkEffect(element) {
+            let intervalId;
+            let colorIndex = 0;
+
+            // Start blinking when cursor enters
+            function startBlinking() {
+                const originalColor = element.style.background;
+                
+                intervalId = setInterval(() => {
+                    const newColor = blinkColors[colorIndex % blinkColors.length];
+                    element.style.background = newColor;
+                    element.style.color = newColor;
+                    element.style.boxShadow = `0 0 20px ${newColor}, 0 0 40px ${newColor}`;
+                    colorIndex++;
+                }, 150);
+            }
+
+            // Stop blinking when cursor leaves
+            function stopBlinking() {
+                clearInterval(intervalId);
+                // Restore original color from data attribute
+                const originalColor = element.dataset.color;
+                element.style.background = originalColor;
+                element.style.color = originalColor;
+                element.style.boxShadow = 'none';
+            }
+
+            element.addEventListener('mouseenter', startBlinking);
+            element.addEventListener('mouseleave', stopBlinking);
+        }
+
+        // Apply effect to all cities
+        cities.forEach(city => {
+            addBlinkEffect(city);
+        });
+    </script>
+</body>
+</html>
